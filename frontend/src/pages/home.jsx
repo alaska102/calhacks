@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import NavigationBar from '../components/NavigationBar';
 import { 
   Button, 
   Typography, 
@@ -11,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#3f51b5',
+      main: '#81A4CD',
     },
     secondary: {
       main: '#f50057',
@@ -23,7 +24,7 @@ const theme = createTheme({
 const topics = [
   'Substance Abuse',
   'Domestic Violence',
-  'Eating Disorder',
+  'Eating Disorders',
   'Sexual Harassment',
   'Suicide Prevention',
   'Sexual Abuse',
@@ -51,33 +52,38 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
+      <NavigationBar />
       <Container maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <Box textAlign="center">
-          <Typography variant="h2" component="h1" gutterBottom>
-            <Box component="span" color="text.secondary">hotline</Box>
-            <Box component="span" color="primary.main">warm</Box>
-            <Box component="span" color="secondary.main">up</Box>
+          <Typography variant="h1" component="h1" gutterBottom>
+            <Box component="span" color="text.secondary" fontWeight='bold'>crisis call </Box>
+            <Box component="span" color="secondary.main">simulation</Box>
           </Typography>
           
           <Typography variant="h5" color="text.secondary" paragraph>
-            A quick way to prepare for your next hotline shift in
+            Helping you feel more confident in crisis situations. Focusing on topics like:
+          <br />
           </Typography>
-          <Typography variant="h5" color="primary.main" paragraph>
+          <Typography variant="h5" color="primary.main"   sx={{
+              backgroundColor: 'rgba(25, 118, 210, 0.08)',
+              display: 'inline-block',
+              padding: '2px 4px',
+              borderRadius: '5px',
+              mb: 4
+            }}
+            >
             {topics[currentTopicIndex]}
-          </Typography>
-          
-          <Typography variant="body1" color="text.secondary" paragraph>
-            Practice key responses, gain insights into your answers, and become more comfortable handling sensitive situations.
-          </Typography>
+          </Typography>          
+          <br />
 
           <Button 
             variant="contained" 
             color="primary" 
             size="large" 
             onClick={handleStartPractice}
-            sx={{ mt: 2, mb: 4, py: 1.5, px: 4, borderRadius: 28 }}
+            sx={{ mt: 4, mb: 6, py: 2, px: 6, borderRadius: 50, color: 'white', minWidth: '280px', fontSize: '1.5rem', fontWeight: 'light' }}
           >
-            Start practicing
+            Start Simulation
           </Button>
 
           <Box mt={6}>

@@ -48,7 +48,7 @@ const theme = createTheme({
 const categories = [
   'Substance Abuse',
   'Domestic Violence',
-  'Eating Disorder',
+  'Eating Disorders',
   'Sexual Harrasment',
   'Suicide Prevention',
   'Sexual Abuse',
@@ -61,9 +61,8 @@ export default function Practice() {
       <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 6 }}>
         <Container maxWidth="sm">
           <Typography variant="h4" component="h1" align="center" gutterBottom>
-            <span style={{ color: '#757575' }}>hotline</span>
-            <span style={{ color: '#3f51b5' }}>warm</span>
-            <span style={{ color: '#f50057' }}>up</span>
+            <Box component="span" color="text.secondary" fontWeight='bold'>crisis call </Box>
+            <Box component="span" color="secondary.main">simulation</Box>
           </Typography>
           <Typography variant="h5" align="center" gutterBottom sx={{ mb: 4, color: '#424242' }}>
             What category do you want to practice?
