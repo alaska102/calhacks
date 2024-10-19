@@ -82,5 +82,5 @@ def generate_scenario(genre):
         return None
 
 # Test the function
-scenario = generate_scenario("sexual abuse")
+scenario = generate_scenario("gambling addiction")
 print(scenario)

@@ -67,6 +67,5 @@ def text_to_speech(scenario):
         # Terminate the PyAudio instance
         p.terminate()
 
-transcript = "Hello, um, I'm not sure if I'm calling the right place, but I really need help. I've been struggling with my eating for a while now, and it's getting worse. I feel like I'm constantly thinking about food, and I'm always trying to restrict what I eat. I'm so scared of gaining weight, and I feel like I have no control over it. I've tried to stop on my own, but I always end up going back to the same patterns. I'm starting to feel really weak and tired all the time, and I'm worried about what this is doing to my body. I don't know what to do anymore. I just feel so lost and alone." 
-
+transcript = "Hello?  Is this the gambling addiction hotline?  I don't even know where to begin.  I've been gambling for a while now, mostly online, and it's gotten out of control.  I keep thinking I'll win it all back, but I just keep losing more and more.  I've been using my credit cards, even dipping into my savings.  My partner is starting to get suspicious, and I'm terrified they'll find out.  I know I need to stop, but I don't know how.  I'm so ashamed and scared.  I just need some help."
 text_to_speech(transcript)
