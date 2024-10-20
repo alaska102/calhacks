@@ -118,7 +118,3 @@ def generate_response(scenario, user_response):
         print(f"An error occurred: {e}")
         return None
 
-# Test the function
-generate_response("Hi, I... I don't know how to say this. It happened a while ago, but I still feel so messed up about it. It was someone I really trusted, someone I thought I could always rely on. They took advantage of me, and now I feel so violated and confused. I've been trying to push it down, pretend it didn't happen, but it keeps coming back to haunt me. I feel so ashamed, like it's my fault. I don't know who to talk to, I don't want to burden anyone with this, but I just need someone to listen. I need to know I'm not alone.",
-                             "I am so sorry that you are feeling this way, and I want you to know that it is not your fault. You did not deserve what happened, and your feelings are completely valid. It takes a lot of strength to reach out, and I am here to listen to you. You are not alone in this; there are people who want to help and support you through it. It is okay to feel confused and overwhelmed, and it is okay to take your time in processing what happened. If you are comfortable, we can explore some resources together that might help you find the support and understanding you deserve." )
-

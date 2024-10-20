@@ -81,6 +81,3 @@ def generate_scenario(genre):
         print(f"An error occurred: {e}")
         return None
 
-# Test the function
-scenario = generate_scenario("gambling addiction")
-print(scenario)

@@ -6,7 +6,7 @@ load_dotenv()
 
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
-def generate_insights(transcript, user_responses):
+def generate_insights(conversation):
     """
     Generate insights using the Gemini API based on the conversation transcript and user responses.
     
@@ -20,9 +20,7 @@ def generate_insights(transcript, user_responses):
     # Prepare the prompt for the Gemini API
     prompt = (
         f"Analyze the following conversation transcript between an AI acting as a person in crisis calling a hotline and the user as the counselour responding on the hotline :\n\n"
-        f"{transcript}\n\n"
         f"The user's who's behaving a as a counselour responses throughout the conversation are:\n"
-        f"{' '.join(user_responses)}\n\n"
         "Please provide a detailed summary of the conversation, identifying what the user could have done better, any words or phrases they missed, "
         "and specific areas for improvement. Focus on clarity, completeness, and any missed emotional cues or responses. "
         "Also, suggest actionable steps the user could take to improve their performance in a similar situation."
