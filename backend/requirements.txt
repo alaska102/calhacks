@@ -1,3 +1,4 @@
 Cartesia API
 Gemini API
 Flask
+OpenAI Whisper

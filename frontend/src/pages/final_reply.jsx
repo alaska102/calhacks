@@ -1,20 +1,31 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { Button, Typography, Container } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Button, Typography, Container, Box, createTheme, ThemeProvider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Mic, Stop } from '@mui/icons-material';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#f44336', 
+    },
+    secondary: {
+      main: '#3f51b5', 
+    },
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+  },
+});
 
 export default function FinalReply() {
   const [recording, setRecording] = useState(false);
-  const [transcription, setTranscription] = useState('');
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { category, scenario, response } = location.state || {};
 
   const handleStartStopRecord = async () => {
     if (!recording) {
-      // Start recording
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         alert('Your browser does not support audio recording');
         return;
@@ -33,14 +44,9 @@ export default function FinalReply() {
           const blob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
           const formData = new FormData();
           formData.append('audio', blob, 'user_reply_audio.wav');
-          formData.append('scenario', scenario);
 
           try {
-            const response = await axios.post(
-              'http://localhost:5001/api/transcribe_audio',
-              formData
-            );
-            setTranscription(response.data.transcription); // Store the transcription of the user's reply
+            await axios.post('http://localhost:5001/api/transcribe_audio', formData);
           } catch (error) {
             console.error('Error transcribing audio:', error);
           }
@@ -53,7 +59,6 @@ export default function FinalReply() {
         console.error('Error accessing microphone:', error);
       }
     } else {
-      // Stop recording
       mediaRecorderRef.current.stop();
       setRecording(false);
     }
@@ -70,47 +75,65 @@ export default function FinalReply() {
     }
   };
 
-  if (!category || !scenario || !response) {
-    return (
-      <Container>
-        <Typography variant="body1">
-          Required data not provided. Please go back and try again.
-        </Typography>
-      </Container>
-    );
-  }
-
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Record Your Reply
-      </Typography>
-      <Typography variant="body1" style={{ marginBottom: '20px' }}>
-        AI Response: {response}
-      </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleStartStopRecord}
-        style={{ marginBottom: '20px' }}
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: 'linear-gradient(45deg, #f44336 30%, #3f51b5 90%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+        }}
       >
-        {recording ? 'Stop Recording' : 'Start Recording'}
-      </Button>
-      {transcription && (
-        <>
-          <Typography variant="body1" style={{ marginTop: '20px' }}>
-            Your Reply: {transcription}
+        <Container maxWidth="sm">
+          <Typography variant="h2" component="h1" align="center" gutterBottom>
+            <Box component="span" sx={{ color: 'rgba(255,255,255,0.8)' }}>crisis call</Box>{' '}
+            <Box component="span" sx={{ color: '#ff4081' }}>simulation</Box>
           </Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleProceedToInsights}
-            style={{ marginTop: '20px' }}
-          >
-            Proceed to Insights
-          </Button>
-        </>
-      )}
-    </Container>
+          <Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
+            Record Your Reply
+          </Typography>
+          <Box display="flex" justifyContent="center" mb={4}>
+            <Button
+              variant="contained"
+              color={recording ? "secondary" : "primary"}
+              onClick={handleStartStopRecord}
+              startIcon={recording ? <Stop /> : <Mic />}
+              sx={{
+                bgcolor: recording ? '#ff4081' : 'rgba(255,255,255,0.2)',
+                color: 'white',
+                '&:hover': { bgcolor: recording ? '#f50057' : 'rgba(255,255,255,0.3)' },
+                py: 2,
+                px: 4,
+                borderRadius: 50,
+              }}
+            >
+              {recording ? 'Stop Recording' : 'Start Recording'}
+            </Button>
+          </Box>
+          {!recording && (
+            <Box display="flex" justifyContent="center">
+              <Button
+                variant="contained"
+                onClick={handleProceedToInsights}
+                sx={{
+                  bgcolor: '#ff4081',
+                  color: 'white',
+                  '&:hover': { bgcolor: '#f50057' },
+                  py: 2,
+                  px: 4,
+                  borderRadius: 50,
+                }}
+              >
+                Proceed to Insights
+              </Button>
+            </Box>
+          )}
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }

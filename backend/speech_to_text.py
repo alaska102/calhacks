@@ -10,10 +10,8 @@ def transcribe_audio(audio_filename):
     Returns:
         str: The transcription of the audio file.
     """
-    # Load the Whisper model; options are tiny, base, small, medium, large
-    model = whisper.load_model("tiny")
+    model = whisper.load_model("medium")
 
-    # Transcribe the audio file
     result = model.transcribe(audio_filename)
     transcript = result['text']
 

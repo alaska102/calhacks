@@ -3,15 +3,29 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTTS } from '@cartesia/cartesia-js/react';
 import { 
   Button, 
-  Card, 
-  CardContent, 
-  CardHeader, 
   Typography, 
   Box,
   Container,
-  IconButton
+  IconButton,
+  createTheme,
+  ThemeProvider
 } from '@mui/material';
 import { PlayArrow, Pause, Mic } from '@mui/icons-material';
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#f44336', 
+    },
+    secondary: {
+      main: '#3f51b5', 
+    },
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+  },
+});
 
 export default function Category() {
   const location = useLocation();
@@ -20,7 +34,7 @@ export default function Category() {
   const [text, setText] = useState(scenario || '');
 
   const tts = useTTS({
-    apiKey: '', // Make sure this environment variable is set correctly
+    apiKey = process.env.CARTESIA_API_KEY,
     sampleRate: 22050,
   });
 
@@ -63,47 +77,66 @@ export default function Category() {
   };
 
   const handleProceedToResponse = () => {
-    // Navigate to the next page for the user to respond
     navigate('/response', { state: { category, scenario } });
   };
 
   if (!category || !scenario) {
     return (
-      <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Card>
-          <CardContent>
-            <Typography variant="body1" align="center">
-              No category or scenario provided. Please go back and select a category.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Container>
+      <ThemeProvider theme={theme}>
+        <Box
+          sx={{
+            minHeight: '100vh',
+            background: 'linear-gradient(45deg, #f44336 30%, #3f51b5 90%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+          }}
+        >
+          <Typography variant="body1" align="center">
+            No category or scenario provided. Please go back and select a category.
+          </Typography>
+        </Box>
+      </ThemeProvider>
     );
   }
 
   return (
-    <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-      <Card sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
-        <CardHeader 
-          title={
-            <Typography variant="h4" component="h2" align="center" color="primary">
-              {category}
-            </Typography>
-          }
-        />
-        <CardContent>
-          <Typography variant="body1" align="center" paragraph>
-            {scenario}
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: 'linear-gradient(45deg, #f44336 30%, #3f51b5 90%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+        }}
+      >
+        <Container maxWidth="sm">
+          <Typography variant="h2" component="h1" align="center" gutterBottom>
+            <Box component="span" sx={{ color: 'rgba(255,255,255,0.8)' }}>crisis call</Box>{' '}
+            <Box component="span" sx={{ color: '#ff4081' }}>simulation</Box>
           </Typography>
+          <Typography variant="h4" align="center" color="white" gutterBottom>
+            {category}
+          </Typography>
+          <Box sx={{ bgcolor: 'rgba(255,255,255,0.1)', borderRadius: 2, p: 3, mb: 3 }}>
+            <Typography variant="body1" align="center" paragraph>
+              {scenario}
+            </Typography>
+          </Box>
           <Box display="flex" justifyContent="center" mb={2}>
             <IconButton 
               onClick={handlePlayPause} 
               sx={{ 
                 width: 80, 
                 height: 80, 
-                bgcolor: 'primary.main', 
-                color: 'primary.contrastText',
-                '&:hover': { bgcolor: 'primary.dark' }
+                bgcolor: 'rgba(255,255,255,0.2)', 
+                color: 'white',
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' }
               }}
             >
               {tts.playbackStatus === 'playing' ? (
@@ -113,24 +146,32 @@ export default function Category() {
               )}
             </IconButton>
           </Box>
-          <Typography variant="caption" display="block" align="center">
+          <Typography variant="caption" display="block" align="center" sx={{ color: 'rgba(255,255,255,0.7)' }}>
             Playback Status: {tts.playbackStatus}
           </Typography>
-          <Typography variant="caption" display="block" align="center">
+          <Typography variant="caption" display="block" align="center" sx={{ color: 'rgba(255,255,255,0.7)' }}>
             Buffer Status: {tts.bufferStatus}
           </Typography>
-          <Box display="flex" justifyContent="center" mt={2}>
+          <Box display="flex" justifyContent="center" mt={3}>
             <Button 
               variant="contained" 
               color="secondary" 
               startIcon={<Mic />} 
               onClick={handleProceedToResponse}
+              sx={{
+                bgcolor: '#ff4081',
+                color: 'white',
+                '&:hover': { bgcolor: '#f50057' },
+                py: 1,
+                px: 4,
+                borderRadius: 50,
+              }}
             >
               Respond
             </Button>
           </Box>
-        </CardContent>
-      </Card>
-    </Container>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }

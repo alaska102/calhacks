@@ -1,38 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTTS } from '@cartesia/cartesia-js/react';
-import { 
-  Button, 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Typography, 
-  Box,
-  Container,
-  IconButton
-} from '@mui/material';
+import { Button, Typography, Box, Container, IconButton, createTheme, ThemeProvider } from '@mui/material';
 import { PlayArrow, Pause } from '@mui/icons-material';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#f44336',
+    },
+    secondary: {
+      main: '#3f51b5',
+    },
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+  },
+});
 
 export default function FollowUp() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { category, scenario, response } = location.state || {};
-  const [text, setText] = useState(response || '');
+  const { scenario, text: incomingText } = location.state || {}; 
+
+
+  const aiResponse = incomingText || 'No AI response available.';
+
+  const [currentText, setCurrentText] = useState(aiResponse); 
   const [isPlaying, setIsPlaying] = useState(false);
 
   const tts = useTTS({
-    apiKey: '', // Make sure this environment variable is set correctly
+    apiKey = process.env.CARTESIA_API_KEY,
     sampleRate: 22050,
   });
 
   useEffect(() => {
-    if (response) {
-      setText(response);
-    }
-  }, [response]);
+    console.log("Scenario:", scenario);
+    console.log("AI Response:", aiResponse);
+  }, [scenario, aiResponse]);
 
   const handlePlayPause = async () => {
-    if (!text) {
+    if (!currentText) { 
       console.error('No text provided for TTS playback.');
       return;
     }
@@ -47,14 +55,9 @@ export default function FollowUp() {
             model_id: 'sonic-english',
             voice: {
               mode: 'id',
-              id: 'a0e99841-438c-4a64-b679-ae501e7d6091', // Replace with your desired voice ID
+              id: 'a0e99841-438c-4a64-b679-ae501e7d6091',
             },
-            transcript: text,
-            options: {
-              temperature: 0.3,
-              top_p: 0.8,
-              top_k: 20,
-            },
+            transcript: currentText, //
           });
         }
         await tts.play();
@@ -66,63 +69,67 @@ export default function FollowUp() {
   };
 
   const handleProceed = () => {
-    // Navigate to the next page or perform any action needed
-    navigate('/final_reply', { state: { category, scenario, response } });
+    navigate('/final_reply', { state: { response: currentText } }); 
   };
 
-  if (!category || !scenario || !response) {
-    return (
-      <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Card>
-          <CardContent>
-            <Typography variant="body1" align="center">
-              Required data not provided. Please go back and start again.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Container>
-    );
-  }
-
   return (
-    <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-      <Card sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
-        <CardHeader 
-          title={
-            <Typography variant="h4" component="h2" align="center" color="primary">
-              {category} - AI Response
-            </Typography>
-          }
-        />
-        <CardContent>
-          <Typography variant="body1" align="center" paragraph>
-            {response}
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: 'linear-gradient(45deg, #f44336 30%, #3f51b5 90%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+        }}
+      >
+        <Container maxWidth="sm">
+          <Typography variant="h2" component="h1" align="center" gutterBottom>
+            <Box component="span" sx={{ color: 'rgba(255,255,255,0.8)' }}>crisis call</Box>{' '}
+            <Box component="span" sx={{ color: '#ff4081' }}>simulation</Box>
           </Typography>
-          <Box display="flex" justifyContent="center" mb={2}>
+          <Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
+            Caller Follow-Up
+          </Typography>
+          <Box sx={{ bgcolor: 'rgba(255,255,255,0.1)', borderRadius: 2, p: 3, mb: 3 }}>
+            <Typography variant="body1" align="center" paragraph>
+              {aiResponse}
+            </Typography>
+          </Box>
+          <Box display="flex" justifyContent="center" mb={4}>
             <IconButton 
-              onClick={handlePlayPause} 
+              onClick={handlePlayPause}
               sx={{ 
                 width: 80, 
                 height: 80, 
-                bgcolor: 'primary.main', 
-                color: 'primary.contrastText',
-                '&:hover': { bgcolor: 'primary.dark' }
+                bgcolor: 'rgba(255,255,255,0.2)', 
+                color: 'white',
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' }
               }}
             >
               {isPlaying ? <Pause fontSize="large" /> : <PlayArrow fontSize="large" />}
             </IconButton>
           </Box>
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button 
-              variant="contained" 
-              color="secondary" 
+          <Box display="flex" justifyContent="center">
+            <Button
+              variant="contained"
               onClick={handleProceed}
+              sx={{
+                bgcolor: '#ff4081',
+                color: 'white',
+                '&:hover': { bgcolor: '#f50057' },
+                py: 2,
+                px: 4,
+                borderRadius: 50,
+              }}
             >
               Continue
             </Button>
           </Box>
-        </CardContent>
-      </Card>
-    </Container>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }
