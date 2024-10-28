@@ -11,4 +11,4 @@ Features
 
 Dynamic Scenarios: Users can engage in interactive conversations tailored to specific crisis topics, building their skills through realistic practice.
 AI-Driven Conversations: By integrating Cartesia and OpenAI’s Whisper, our simulation generates responsive, adaptive dialogues for in-depth training.
-Cross-Platform Compatibility: Built with React Native, the app is accessible on both iOS and Android, making it convenient for users on any mobile device.
+Cross-Platform Compatibility: Built with React, the app is accessible on both iOS and Android, making it convenient for users on any mobile device.
