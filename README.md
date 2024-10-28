@@ -3,7 +3,7 @@ Our CalHacks project is a Crisis Training Simulation designed to simulate realis
 Technologies Used
 
 Cartesia, OpenAI Whisper, and Google Gemini: These powerful tools enable dynamic, context-rich conversations that adapt to different crisis scenarios, providing users with unique training experiences.
-React Native: Our frontend framework, allowing us to create a smooth, intuitive, and cross-platform user interface.
+React: Our frontend framework, allowing us to create a smooth, intuitive, and cross-platform user interface.
 Flask: The backend framework that powers our application logic, handles data flow, and manages interactions between the frontend and AI tools.
 
 Features
